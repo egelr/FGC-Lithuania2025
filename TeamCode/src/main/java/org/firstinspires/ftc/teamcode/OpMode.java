@@ -32,7 +32,7 @@ public class OpMode extends LinearOpMode {
         spin = new Motor(hardwareMap, "spin", 28, 300);
 
         hangBack.setInverted(true);
-        
+
         fL.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         fR.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         bL.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
