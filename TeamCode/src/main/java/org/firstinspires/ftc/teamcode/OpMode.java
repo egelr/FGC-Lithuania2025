@@ -4,6 +4,7 @@ import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -14,7 +15,11 @@ public class OpMode extends LinearOpMode {
 
 
     private Motor fL, fR, bL, bR, hangFront, hangBack, spin;
-    //Creating drive speed variable
+
+    CRServo ballIntakeServoLeft, ballIntakeServoRight;
+    double power;
+    
+    //Creating drive speed variable 
     public double drive_speed = 1;
 
     @Override
@@ -39,6 +44,12 @@ public class OpMode extends LinearOpMode {
         bR.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         hangFront.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         hangBack.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        
+        Servo armServoLeft = hardwareMap.get(Servo.class, "armServoLeft");
+        Servo armServoRight = hardwareMap.get(Servo.class, "armServoRight");
+
+        ballIntakeServoLeft = hardwareMap.crservo.get("ballIntakeServoLeft");
+        ballIntakeServoRight = hardwareMap.crservo.get("ballIntakeServoRight");
 
         //Creating the Mecanum Drivetrain
         MecanumDrive drive = new MecanumDrive(fL, fR, bL, bR);
@@ -73,9 +84,47 @@ public class OpMode extends LinearOpMode {
                 hangBack.set(-1);
                 hangFront.set(-1);
             }
-            if(gamepad1.circle){
+            if(gamepad1.square){
                 spin.set(1);
             }
+
+            if(gamepad1.dpad_left){
+                armServoLeft.setPosition(1);
+                armServoRight.setPosition(0);
+            }
+
+            if(gamepad1.dpad_right){
+                armServoLeft.setPosition(0);
+                armServoRight.setPosition(1);
+            }
+            if (gamepad1.circle) {
+                ballIntakeServoLeft.setPower(1);
+                ballIntakeServoRight.setPower(-1);
+            }
+            if (gamepad1.triangle) {
+                ballIntakeServoLeft.setPower(-1);
+                ballIntakeServoRight.setPower(1);
+            }
+            //reset arba isjungt viska
+            if(gamepad1.guide && gamepad1.left_trigger < 0.5){
+                armServoLeft.setPosition(1);
+                armServoRight.setPosition(0);
+                hangBack.set(0);
+                hangFront.set(0);
+                spin.set(0);
+                ballIntakeServoLeft.setPower(0);
+                ballIntakeServoRight.setPower(0);
+            }
+            if(gamepad1.guide && gamepad1.left_trigger > 0.5){
+                armServoLeft.setPosition(1);
+                armServoRight.setPosition(0);
+                hangBack.set(0.1);
+                hangFront.set(0.1);
+                spin.set(0);
+                ballIntakeServoLeft.setPower(0);
+                ballIntakeServoRight.setPower(0);
+            }
+
 
         }
 

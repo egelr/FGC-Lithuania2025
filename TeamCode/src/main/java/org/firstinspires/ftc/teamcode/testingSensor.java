@@ -12,9 +12,11 @@ public class testingSensor extends LinearOpMode {
     TouchSensor test_magnetic;
 
     public boolean STATE;
-    public int COUNT, RPM, COUNTRPM;
+    public double COUNT, RPM, RPM2, laikas;
 
     ElapsedTime timer = new ElapsedTime();
+    ElapsedTime dainius = new ElapsedTime();
+
 
     @Override
     public void runOpMode() {
@@ -25,10 +27,12 @@ public class testingSensor extends LinearOpMode {
         waitForStart();
 
         timer.reset();
+        dainius.reset();
 
         // Loop while the Op Mode is running
         while (opModeIsActive()) {
             RPM = COUNT*12;
+            RPM2 = 60/laikas;
             if (test_magnetic.isPressed()) {
                 STATE = true;
                 COUNT = COUNT + 1;
@@ -42,10 +46,16 @@ public class testingSensor extends LinearOpMode {
                 timer.reset();
                 COUNT = 0;
             }
+            if (STATE)
+            {
+                dainius.reset();
+                laikas = dainius.seconds();
+            }
 
 
             telemetry.addData("STATE: ", STATE);
             telemetry.addData("RPM: ", RPM);
+            telemetry.addData("RPM2: ", RPM2);
             telemetry.addData("COUNT: ", COUNT);
             telemetry.update();
         }
