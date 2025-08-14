@@ -89,8 +89,8 @@ public class OpMode extends LinearOpMode {
             }
 
             if(gamepad1.dpad_left){
-                armServoLeft.setPosition(1);
-                armServoRight.setPosition(0);
+                armServoLeft.setPosition(0.8);
+                armServoRight.setPosition(0.2);
             }
 
             if(gamepad1.dpad_right){
@@ -107,8 +107,8 @@ public class OpMode extends LinearOpMode {
             }
             //reset arba isjungt viska
             if(gamepad1.guide && gamepad1.left_trigger < 0.5){
-                armServoLeft.setPosition(1);
-                armServoRight.setPosition(0);
+                armServoLeft.setPosition(0.8);
+                armServoRight.setPosition(0.2);
                 hangBack.set(0);
                 hangFront.set(0);
                 spin.set(0);
@@ -116,13 +116,19 @@ public class OpMode extends LinearOpMode {
                 ballIntakeServoRight.setPower(0);
             }
             if(gamepad1.guide && gamepad1.left_trigger > 0.5){
-                armServoLeft.setPosition(1);
-                armServoRight.setPosition(0);
+                armServoLeft.setPosition(0.8);
+                armServoRight.setPosition(0.2);
                 hangBack.set(0.1);
                 hangFront.set(0.1);
                 spin.set(0);
                 ballIntakeServoLeft.setPower(0);
                 ballIntakeServoRight.setPower(0);
+            }
+            if(gamepad1.share){
+                armServoRight.setPosition(0.85);
+            }
+            if(gamepad1.options){
+                armServoLeft.setPosition(0.15);
             }
 
 
