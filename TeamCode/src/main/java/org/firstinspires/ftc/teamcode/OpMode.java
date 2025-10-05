@@ -16,7 +16,6 @@ public class OpMode extends LinearOpMode {
 
     private Motor fL, fR, bL, bR, hangFront, hangBack, spin;
 
-    CRServo ballIntakeServoLeft, ballIntakeServoRight;
     double power;
     
     //Creating drive speed variable 
@@ -47,9 +46,9 @@ public class OpMode extends LinearOpMode {
         
         Servo armServoLeft = hardwareMap.get(Servo.class, "armServoLeft");
         Servo armServoRight = hardwareMap.get(Servo.class, "armServoRight");
+        Servo miniArmServoRight = hardwareMap.get(Servo.class, "miniArmServoRight");
+        Servo miniArmServoLeft = hardwareMap.get(Servo.class, "miniArmServoLeft");
 
-        ballIntakeServoLeft = hardwareMap.crservo.get("ballIntakeServoLeft");
-        ballIntakeServoRight = hardwareMap.crservo.get("ballIntakeServoRight");
 
         //Creating the Mecanum Drivetrain
         MecanumDrive drive = new MecanumDrive(fL, fR, bL, bR);
@@ -89,31 +88,21 @@ public class OpMode extends LinearOpMode {
             }
 
             if(gamepad1.dpad_left){
-                armServoLeft.setPosition(0.8);
-                armServoRight.setPosition(0.2);
+                armServoLeft.setPosition(0.82);
+                armServoRight.setPosition(0.20);
             }
 
             if(gamepad1.dpad_right){
-                armServoLeft.setPosition(0);
+                armServoLeft.setPosition(0.05);
                 armServoRight.setPosition(1);
-            }
-            if (gamepad1.circle) {
-                ballIntakeServoLeft.setPower(1);
-                ballIntakeServoRight.setPower(-1);
-            }
-            if (gamepad1.triangle) {
-                ballIntakeServoLeft.setPower(-1);
-                ballIntakeServoRight.setPower(1);
             }
             //reset arba isjungt viska
             if(gamepad1.guide && gamepad1.left_trigger < 0.5){
-                armServoLeft.setPosition(0.8);
-                armServoRight.setPosition(0.2);
+                armServoLeft.setPosition(0.82);
+                armServoRight.setPosition(0.20);
                 hangBack.set(0);
                 hangFront.set(0);
                 spin.set(0);
-                ballIntakeServoLeft.setPower(0);
-                ballIntakeServoRight.setPower(0);
             }
             if(gamepad1.guide && gamepad1.left_trigger > 0.5){
                 armServoLeft.setPosition(0.8);
@@ -121,14 +110,20 @@ public class OpMode extends LinearOpMode {
                 hangBack.set(0.1);
                 hangFront.set(0.1);
                 spin.set(0);
-                ballIntakeServoLeft.setPower(0);
-                ballIntakeServoRight.setPower(0);
             }
             if(gamepad1.share){
                 armServoRight.setPosition(0.85);
             }
             if(gamepad1.options){
                 armServoLeft.setPosition(0.15);
+            }
+            if(gamepad1.circle){
+                miniArmServoLeft.setPosition(0.1);
+                miniArmServoRight.setPosition(0.9);
+            }
+            if(gamepad1.triangle){
+                miniArmServoLeft.setPosition(0.90);
+                miniArmServoRight.setPosition(0.1);
             }
 
 
