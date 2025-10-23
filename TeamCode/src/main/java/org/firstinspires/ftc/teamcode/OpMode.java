@@ -8,8 +8,6 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Variables;
-
 @TeleOp(name = "TeleOpMode")
 public class OpMode extends LinearOpMode {
 
@@ -17,8 +15,8 @@ public class OpMode extends LinearOpMode {
     private Motor fL, fR, bL, bR, hangFront, hangBack, spin;
 
     double power;
-    
-    //Creating drive speed variable 
+
+    //Creating drive speed variable
     public double drive_speed = 1;
 
     @Override
@@ -43,7 +41,7 @@ public class OpMode extends LinearOpMode {
         bR.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         hangFront.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         hangBack.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
-        
+
         Servo armServoLeft = hardwareMap.get(Servo.class, "armServoLeft");
         Servo armServoRight = hardwareMap.get(Servo.class, "armServoRight");
         Servo miniArmServoRight = hardwareMap.get(Servo.class, "miniArmServoRight");
@@ -118,8 +116,8 @@ public class OpMode extends LinearOpMode {
                 armServoLeft.setPosition(0.15);
             }
             if(gamepad1.circle){
-                miniArmServoLeft.setPosition(0.1);
-                miniArmServoRight.setPosition(0.9);
+                miniArmServoLeft.setPosition(0.15);
+                miniArmServoRight.setPosition(0.85);
             }
             if(gamepad1.triangle){
                 miniArmServoLeft.setPosition(0.90);
