@@ -78,8 +78,8 @@ public class OpMode extends LinearOpMode {
                 hangFront.set(1);
             }
             if(gamepad1.dpad_down){
-                hangBack.set(-1);
-                hangFront.set(-1);
+                hangBack.set(-0.1);
+                hangFront.set(-0.1);
             }
             if(gamepad1.square){
                 spin.set(1);
@@ -101,10 +101,14 @@ public class OpMode extends LinearOpMode {
                 hangBack.set(0);
                 hangFront.set(0);
                 spin.set(0);
+                miniArmServoLeft.setPosition(0.90);
+                miniArmServoRight.setPosition(0.1);
             }
             if(gamepad1.guide && gamepad1.left_trigger > 0.5){
                 armServoLeft.setPosition(0.8);
                 armServoRight.setPosition(0.2);
+                miniArmServoLeft.setPosition(0.90);
+                miniArmServoRight.setPosition(0.1);
                 hangBack.set(0.1);
                 hangFront.set(0.1);
                 spin.set(0);
@@ -120,8 +124,8 @@ public class OpMode extends LinearOpMode {
                 miniArmServoRight.setPosition(0.85);
             }
             if(gamepad1.triangle){
-                miniArmServoLeft.setPosition(0.90);
-                miniArmServoRight.setPosition(0.1);
+                miniArmServoLeft.setPosition(0.25);
+                miniArmServoRight.setPosition(0.75);
             }
 
 
