@@ -2,17 +2,24 @@ package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.SerialNumber;
 
-@TeleOp(name = "TeleOpMode")
-public class OpMode extends LinearOpMode {
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+
+@TeleOp(name = "TeleOpModeFieldCentric")
+public class OpModeField extends LinearOpMode {
 
 
     private Motor fL, fR, bL, bR, hangFront, hangBack, spin;
+
+    private IMU m_imu;
 
     double power;
 
@@ -27,7 +34,6 @@ public class OpMode extends LinearOpMode {
         fR = new Motor(hardwareMap, "rightFront", 28, 500);
         bL = new Motor(hardwareMap, "leftBack", 28, 500);
         bR = new Motor(hardwareMap, "rightBack", 28, 500);
-
 
         hangFront = new Motor(hardwareMap, "hangFront", 28, 300);
         hangBack = new Motor(hardwareMap, "hangBack", 28, 300);
@@ -52,23 +58,34 @@ public class OpMode extends LinearOpMode {
         //Creating the Mecanum Drivetrain
         MecanumDrive drive = new MecanumDrive(fL, fR, bL, bR);
 
+        m_imu = hardwareMap.get(IMU.class, "imu");
+
+        IMU.Parameters parameters= new IMU.Parameters(new RevHubOrientationOnRobot(
+             RevHubOrientationOnRobot.LogoFacingDirection.DOWN,
+             RevHubOrientationOnRobot.UsbFacingDirection.LEFT
+        ));
+        m_imu.initialize(parameters);
+        m_imu.resetYaw();
+
         //Creating timer variables
         ElapsedTime timer = new ElapsedTime();
 
         waitForStart();
 
         while (!isStopRequested()) {
+            double heading = m_imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
 
             //Drivetrain controls
-            drive.driveRobotCentric(
+            drive.driveFieldCentric(
                     gamepad1.left_stick_x * drive_speed,
                     -gamepad1.left_stick_y * drive_speed,
-                    gamepad1.right_stick_x * drive_speed
+                    gamepad1.right_stick_x * drive_speed,
+                    heading
 
             );
             //Drivetrain Motors speed Change controls
             if (gamepad1.right_trigger > 0.5) {
-                drive_speed = 0.45;
+                drive_speed = 0.35;
             } else {
                 drive_speed = 1;
             }
@@ -95,7 +112,7 @@ public class OpMode extends LinearOpMode {
                 armServoRight.setPosition(1);
             }
             //reset arba isjungt viska
-            if(gamepad1.guide && gamepad1.left_trigger < 0.5){
+            if(gamepad1.guide && gamepad1.left_trigger < 0.8){
                 armServoLeft.setPosition(0.82);
                 armServoRight.setPosition(0.20);
                 hangBack.set(0);
@@ -104,7 +121,7 @@ public class OpMode extends LinearOpMode {
                 miniArmServoLeft.setPosition(0.90);
                 miniArmServoRight.setPosition(0.1);
             }
-            if(gamepad1.guide && gamepad1.left_trigger > 0.5){
+            if(gamepad1.guide && gamepad1.left_trigger > 0.8){
                 armServoLeft.setPosition(0.8);
                 armServoRight.setPosition(0.2);
                 miniArmServoLeft.setPosition(0.90);
@@ -120,8 +137,8 @@ public class OpMode extends LinearOpMode {
                 armServoLeft.setPosition(0.15);
             }
             if(gamepad1.circle){
-                miniArmServoLeft.setPosition(0.15);
-                miniArmServoRight.setPosition(0.85);
+                miniArmServoLeft.setPosition(0.12);
+                miniArmServoRight.setPosition(0.88);
             }
             if(gamepad1.triangle){
                 miniArmServoLeft.setPosition(0.25);
